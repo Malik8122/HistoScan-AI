@@ -21,7 +21,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo "Building image: ${IMAGE_NAME}:${BUILD_NUMBER}"
-                bat "docker build -t ${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${BUILD_NUMBER} ."
+                bat "docker build --pull=false -t ${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${BUILD_NUMBER} ."
                 bat "docker tag ${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${BUILD_NUMBER} ${ACR_LOGIN_SERVER}/${IMAGE_NAME}:latest"
             }
         }
