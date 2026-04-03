@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.git/
+.gitignore
+.env
+venv/
+env/
+*.ipynb
+.ipynb_checkpoints/
+Jenkinsfile
+README.md
+
+tests/
