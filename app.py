@@ -8,7 +8,7 @@ import os
 # Page Configuration
 # -------------------------------
 st.set_page_config(
-    page_title="HistoScan AI v3.0 🚀",
+    page_title="HistoScan AI 🚀",
     page_icon="🧬",
     layout="wide"
 )
@@ -77,7 +77,7 @@ with st.sidebar:
 # -------------------------------
 # Main Header
 # -------------------------------
-st.title("🧬 Breast Cancer Analysis System")
+st.title("🧬 Breast Cancer Analysis System v2.0")
 st.write("Diagnostic assistance tool for histopathology image classification.")
 
 st.info("Upload a histopathology image (RGB). The system will automatically resize and process it.")
