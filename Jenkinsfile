@@ -6,6 +6,7 @@ pipeline {
         IMAGE_NAME       = 'histoscan-ai'
         RESOURCE_GROUP   = 'histoscan-rg'
         CONTAINER_NAME   = 'histoscan-container'
+        AZ_PATH          = '"C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd"'
     }
 
     stages {
@@ -49,8 +50,8 @@ pipeline {
                     ),
                     string(credentialsId: 'azure-tenant-id', variable: 'AZ_TENANT')
                 ]) {
-                    bat "az login --service-principal -u %AZ_CLIENT_ID% -p %AZ_CLIENT_SECRET% --tenant %AZ_TENANT%"
-                    bat "az container restart --resource-group %RESOURCE_GROUP% --name %CONTAINER_NAME%"
+                    bat "%AZ_PATH% login --service-principal -u %AZ_CLIENT_ID% -p %AZ_CLIENT_SECRET% --tenant %AZ_TENANT%"
+                    bat "%AZ_PATH% container restart --resource-group %RESOURCE_GROUP% --name %CONTAINER_NAME%"
                 }
             }
         }

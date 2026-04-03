@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # -------------------------------
-# Custom CSS (FIXED)
+# Custom CSS
 # -------------------------------
 st.markdown("""
 <style>
@@ -47,15 +47,20 @@ st.markdown("""
         margin-top: 20px;
     }
 </style>
-""", unsafe_allow_html=True)  # ✅ FIXED HERE
+""", unsafe_allow_html=True)
 
 # -------------------------------
-# Load Model
+# Load Model (FIXED)
 # -------------------------------
 @st.cache_resource
 def load_model():
     model_path = os.path.join(os.getcwd(), "breakhis_model.h5")
-    return tf.keras.models.load_model(model_path)
+    try:
+        model = tf.keras.models.load_model(model_path, compile=False)
+        return model
+    except Exception as e:
+        st.error(f"❌ Model loading failed: {e}")
+        st.stop()
 
 model = load_model()
 
@@ -75,16 +80,15 @@ with st.sidebar:
 st.title("🧬 Breast Cancer Analysis System")
 st.write("Diagnostic assistance tool for histopathology image classification.")
 
-# Info message (your requirement)
 st.info("Upload a histopathology image (RGB). The system will automatically resize and process it.")
 
 # -------------------------------
-# Layout (2 columns)
+# Layout
 # -------------------------------
 col1, col2 = st.columns([1, 1], gap="large")
 
 # -------------------------------
-# Column 1 → Upload
+# Upload Section
 # -------------------------------
 with col1:
     st.subheader("Image Upload")
@@ -96,57 +100,54 @@ with col1:
     )
 
     if uploaded_file:
-        image = Image.open(uploaded_file).convert("RGB")  # ✅ FIXED (RGB safe)
+        image = Image.open(uploaded_file).convert("RGB")
         st.image(image, caption="Current Upload", use_container_width=True)
 
 # -------------------------------
-# Column 2 → Prediction
+# Prediction Section
 # -------------------------------
 with col2:
     st.subheader("Analysis")
 
     if uploaded_file is not None:
 
-        # Preprocessing
         def preprocess(img):
             img = img.resize((224, 224))
             img_arr = np.array(img)
 
-            # Ensure 3 channels
             if len(img_arr.shape) == 2:
                 img_arr = np.stack((img_arr,) * 3, axis=-1)
 
             img_arr = np.expand_dims(img_arr, axis=0)
             return img_arr
 
-        # Button
         if st.button("Run Diagnostic Analysis"):
 
             with st.spinner("Processing neural layers..."):
 
-                processed_img = preprocess(image)
-                prediction = model.predict(processed_img)[0][0]
+                try:
+                    processed_img = preprocess(image)
+                    prediction = model.predict(processed_img)[0][0]
 
-                # Result logic
-                is_malignant = prediction > 0.5
-                confidence = prediction if is_malignant else (1 - prediction)
+                    is_malignant = prediction > 0.5
+                    confidence = prediction if is_malignant else (1 - prediction)
 
-            st.divider()
+                    st.divider()
 
-            # -------------------------------
-            # Result Display
-            # -------------------------------
-            if is_malignant:
-                st.error("### ⚠️ Classification: Malignant")
-                st.progress(float(prediction))
-            else:
-                st.success("### ✅ Classification: Benign")
-                st.progress(float(1 - prediction))
+                    if is_malignant:
+                        st.error("### ⚠️ Classification: Malignant")
+                        st.progress(float(prediction))
+                    else:
+                        st.success("### ✅ Classification: Benign")
+                        st.progress(float(1 - prediction))
 
-            st.metric(
-                label="Confidence Level",
-                value=f"{confidence * 100:.2f}%"
-            )
+                    st.metric(
+                        label="Confidence Level",
+                        value=f"{confidence * 100:.2f}%"
+                    )
+
+                except Exception as e:
+                    st.error(f"❌ Prediction failed: {e}")
 
     else:
         st.info("Please upload a sample image to begin the analysis.")
