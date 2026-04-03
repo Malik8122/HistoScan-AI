@@ -51,7 +51,8 @@ pipeline {
                     string(credentialsId: 'azure-tenant-id', variable: 'AZ_TENANT')
                 ]) {
                     bat "%AZ_PATH% login --service-principal -u %AZ_CLIENT_ID% -p %AZ_CLIENT_SECRET% --tenant %AZ_TENANT%"
-                    bat "%AZ_PATH% container restart --resource-group %RESOURCE_GROUP% --name %CONTAINER_NAME%"
+                    bat "%AZ_PATH% container delete --resource-group %RESOURCE_GROUP% --name %CONTAINER_NAME% --yes"
+                    bat "%AZ_PATH% container create --resource-group %RESOURCE_GROUP% --name %CONTAINER_NAME% --image %ACR_LOGIN_SERVER%/%IMAGE_NAME%:latest --cpu 1 --memory 3 --ports 8501 --ip-address Public --dns-name-label histoscanapp67890 --registry-login-server %ACR_LOGIN_SERVER% --registry-username histoscanregistry67890 --registry-password 2BF95tF0qq9xhL4CrsPWH6SLp0sratyGERxcXDd01dWtOSsMZpzWJQQJ99CDACGhslBEqg7NAAACAZCRJBAD --os-type Linux"
                 }
             }
         }
