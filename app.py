@@ -77,7 +77,7 @@ with st.sidebar:
 # -------------------------------
 # Main Header
 # -------------------------------
-st.title("Breast Cancer Analysis System ")
+st.title("Breast Cancer Analysis System v2.00")
 st.write("Diagnostic assistance tool for histopathology image classification.")
 
 st.info("Upload a histopathology image (RGB). The system will automatically resize and process it.")
