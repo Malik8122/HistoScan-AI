@@ -7,6 +7,7 @@ pipeline {
         RESOURCE_GROUP   = 'histoscan-rg'
         CONTAINER_NAME   = 'histoscan-container'
         AZ_PATH          = '"C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd"'
+        NOTIFY_EMAIL     = 'sanyask.malik@gmail.com'
     }
 
     stages {
@@ -67,11 +68,73 @@ pipeline {
     post {
         success {
             echo "SUCCESS — Build #${BUILD_NUMBER} deployed"
-            echo "Live: http://histoscanapp67890.centralindia.azurecontainer.io:8501"
+            mail(
+                to: "${NOTIFY_EMAIL}",
+                subject: "SUCCESS: HistoScan AI Build #${BUILD_NUMBER} Deployed",
+                body: """
+Hello Sanya,
+
+Your HistoScan AI pipeline completed successfully!
+
+Build Details:
+--------------
+Build Number  : #${BUILD_NUMBER}
+Status        : SUCCESS
+Branch        : main
+Triggered by  : ${currentBuild.getBuildCauses()[0].shortDescription}
+Duration      : ${currentBuild.durationString}
+
+What happened:
+- Code pulled from GitHub
+- Docker image built and pushed to ACR
+- Azure container redeployed with latest image
+
+Live App URL:
+http://histoscanapp67890.centralindia.azurecontainer.io:8501
+
+Jenkins Dashboard:
+http://localhost:8080/job/HistoScan-AI-Pipeline/${BUILD_NUMBER}/
+
+Regards,
+Jenkins CI/CD Bot
+HistoScan AI Project
+                """
+            )
         }
+
         failure {
             echo "FAILED — check logs above"
+            mail(
+                to: "${NOTIFY_EMAIL}",
+                subject: "FAILED: HistoScan AI Build #${BUILD_NUMBER} Failed",
+                body: """
+Hello Sanya,
+
+Your HistoScan AI pipeline FAILED and needs attention.
+
+Build Details:
+--------------
+Build Number  : #${BUILD_NUMBER}
+Status        : FAILED
+Branch        : main
+Duration      : ${currentBuild.durationString}
+
+Action Required:
+Check the console output to find the error:
+http://localhost:8080/job/HistoScan-AI-Pipeline/${BUILD_NUMBER}/console
+
+Common fixes:
+- Docker timeout: run Build Now again
+- Azure login: check service principal credentials
+- ACR push: check ACR password in Jenkins credentials
+
+Regards,
+Jenkins CI/CD Bot
+HistoScan AI Project
+                """
+            )
         }
+
         always {
             echo "Build #${BUILD_NUMBER} finished: ${currentBuild.result}"
         }
