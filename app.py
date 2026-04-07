@@ -8,7 +8,7 @@ import os
 # Page Configuration
 # -------------------------------
 st.set_page_config(
-    page_title="HistoScan AI 🚀",
+    page_title="HistoScan AI",
     page_icon="🧬",
     layout="wide"
 )
