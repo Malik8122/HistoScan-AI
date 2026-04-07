@@ -18,8 +18,8 @@ st.set_page_config(
 # -------------------------------
 st.markdown("""
 <style>
-    .main {
-        background-color:#ffdab9;
+    [data-testid="stAppViewContainer"] {
+        background-color: #ffdab9;
     }
 
     div.stButton > button:first-child {
