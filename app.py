@@ -19,7 +19,7 @@ st.set_page_config(
 st.markdown("""
 <style>
     .main {
-        background-color: #ffc0cb;
+        background-color:#ffdab9;
     }
 
     div.stButton > button:first-child {
