@@ -1,3 +1,4 @@
+Prometheus-client==0.20.0
 tensorflow==2.21.0
 streamlit
 numpy
