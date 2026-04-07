@@ -121,7 +121,7 @@ st.markdown("""
 
     /* ---- TYPOGRAPHY ---- */
     h1 {
-        font-family: 'Syne', sans-serif !important;
+        font-family:'Inria Serif', serif !important;
         font-weight: 800 !important;
         font-size: 3rem !important;
         letter-spacing: -0.02em !important;
