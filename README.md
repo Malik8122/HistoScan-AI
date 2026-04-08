@@ -293,8 +293,8 @@ Full training curves and evaluation metrics are available in [`APD_Project.ipynb
 | CI/CD | GitHub Actions |
 | Language | Python 3.10 |
 
----
 
+---
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
@@ -302,5 +302,4 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 <p align="center">
-  Made with ❤️ by <a href="https://github.com/Malik8122">Malik8122</a>
 </p>
